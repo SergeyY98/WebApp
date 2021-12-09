@@ -1,0 +1,10 @@
+target/
+.gradle/
+bin/
+!**/src/main/**/target/
+!**/src/test/**/target/
+node_modules/
+build/
+gradlew
+.DS_Store
+wrapper/

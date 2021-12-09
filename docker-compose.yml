@@ -1,0 +1,42 @@
+version : '3'
+services:
+  postgres:
+    container_name: postgres-container
+    hostname: postgres-container
+    build: .
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/postgres:/data/postgres
+    networks:
+      - service-network
+  springboot-backend:
+    container_name: springboot-backend
+    hostname: springboot-backend
+    build:
+      context: ./springboot-backend
+    environment:
+      HTTP_BIND_PORT: 8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - service-network
+  react-frontend:
+    container_name: react-frontend
+    hostname: react-frontend
+    build:
+      context: ./react-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - springboot-backend
+    networks:
+      - service-network
+networks:
+  service-network:
+    driver: bridge
